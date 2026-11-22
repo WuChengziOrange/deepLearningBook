@@ -98,6 +98,26 @@ def draw_pic(pic: NDArray, title: str):
     plt.show()
 
 
+def plot_loss_curve(loss_list: list[float], title: str = "Loss Curve") -> None:
+    """
+    绘制训练损失曲线
+    :param loss_list: 每一轮/每一批收集的loss
+    :param title: 图标题
+    """
+    plt.figure(figsize=(8, 4))
+    plt.plot(loss_list, color="#2E86AB", linewidth=1.5, label="train loss")
+    plt.xlabel("iteration / epoch")
+    plt.ylabel("loss")
+    plt.title(title)
+    plt.grid(alpha=0.3)
+    plt.legend()
+    plt.tight_layout()
+    plt.show()
+
+
 if __name__ == "__main__":
     img = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
     draw_pic(img, "test")
+    loss_list = [0.1 * i for i in range(10)]
+    loss_list.reverse()
+    plot_loss_curve(loss_list)
