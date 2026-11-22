@@ -34,7 +34,7 @@ class relu:
 
     def forward(self, input: NDArray):
         self.mask = input <= 0
-        output = input.copy()
+        output = input
         output[self.mask] = 0
 
         return output
@@ -73,7 +73,6 @@ class affine:
         self.w, self.b = w, b
 
     def forward(self, input: NDArray):
-        self.original_input_shape = input.shape
         if input.ndim == 1:
             # if don't have batch dim
             input = input.reshape(1, -1)
@@ -88,10 +87,7 @@ class affine:
         # 后层在最初计算反向传播的时候，已经除以 batchsize 了，所以这里直接加就可以了
         self.db = dout.sum(axis=0)
         dx = dout @ self.w.T
-        # 这里真的需要reshape吗？ 推理的时候，上一级relu 的输出是 copy()
-        # 所以我们在 forward 的时候虽然 reshape 了 input，但是并没有改变上一层 relu 的 shape
-        # 后面可以考虑relu不要copy()了，这里也就不用再次 reshape 了。
-        return dx.reshape(*self.original_input_shape)
+        return dx
 
 
 def draw_pic(pic: NDArray, title: str):

@@ -38,7 +38,9 @@ train_acc_list = []
 test_acc_list = []
 
 iter_per_epoch = max(train_size / batch_size, 1)
+total_epoch = iters_num / iter_per_epoch
 
+print("epoch/total\t tran_acc\t test_acc")
 for i in range(iters_num):
     batch_mask = np.random.choice(train_size, batch_size)
     x_batch = x_train[batch_mask]
@@ -61,7 +63,7 @@ for i in range(iters_num):
         train_acc_list.append(train_acc)
         test_acc_list.append(test_acc)
         print(
-            f"epoch {i/iter_per_epoch}, tran_acc {train_acc:.4f}, test_acc {test_acc:.4f}"
+            f"{i//iter_per_epoch}/{total_epoch:.2f}\t {train_acc:.4f}\t\t {test_acc:.4f}"
         )
 # %% test
 err_idx = []
