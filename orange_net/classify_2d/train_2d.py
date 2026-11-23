@@ -14,7 +14,7 @@ from dataset_2d import get_dataset
 from basic_func import plot_loss_curve
 
 # set seed
-np.random.seed(0)
+# np.random.seed(1)
 # 读入数据
 (x_train, t_train), (x_test, t_test) = get_dataset(
     norm=True, train_num=4000, test_num=200
@@ -23,7 +23,7 @@ np.random.seed(0)
 network = network_2d(input_size=2, hidden_size=3, output_size=2)
 # %% training
 print("training...")
-total_epoch = 30
+total_epoch = 60
 
 train_size = x_train.shape[0]
 batch_size = 100
@@ -89,6 +89,10 @@ W1 = np.array([[2.1, 0.4, -2.4], [-1.7, 2.6, -1.0]])
 b1 = np.array([-0.3, -0.3, -0.2])
 W2 = np.array([[-1.9, 1.9], [-1.9, 1.9], [-1.8, 1.8]])
 b2 = np.array([1.7, -1.7])
+parm_list = [W1,b1,W2,b2]
+for v,k in zip(parm_list,network.params.keys()):
+    v[:] = network.params[k]
+
 W1 /= 3
 
 def forward(x):
