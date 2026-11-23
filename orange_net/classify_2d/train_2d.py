@@ -11,23 +11,14 @@ from network_2d import network_2d
 from dataset_2d import get_dataset
 from basic_func import plot_loss_curve
 
+# set seed
+np.random.seed(0)
 # 读入数据
 (x_train, t_train), (x_test, t_test) = get_dataset(
     norm=True, train_num=4000, test_num=200
 )
 
 network = network_2d(input_size=2, hidden_size=3, output_size=2)
-
-
-# def analyse_pic(i, x=x_test, t=t_test):
-#     a, b = np.argmax(network.predict(x[i])), np.argmax(t[i])
-
-#     draw_pic(
-#         x[i].reshape(28, 28),
-#         f"{'good' if a==b else 'bad'} {a} vs {b} idx: {i}",
-#     )
-
-
 # %% training
 print("training...")
 total_epoch = 30
@@ -71,11 +62,11 @@ for i in range(iters_num):
         )
 
 plot_loss_curve(train_loss_list)
-# %% test
-trained_parm = network.params.copy()
+trained_parm = {k: v.copy() for k, v in network.params.items()}
 for key in ("W1", "b1", "W2", "b2"):
-    network.params[key] = network.params[key].round(decimals=1)
+    network.params[key].round(decimals=1, out=network.params[key])
 
+# %% test
 err_idx = []
 accuracy_cnt = 0
 for i in range(len(x_test)):
@@ -154,7 +145,5 @@ plt.ylabel("x2")
 plt.title("Decision boundary (piecewise linear)")
 plt.show()
 
-# %% show error
-i = err_idx[eid]
-analyse_pic(i, x_test, t_test)
-eid += 1
+# %% update parms
+network.modify_parms(W1=W1 * 3, b1=b1, W2=W2, b2=b2)

@@ -62,6 +62,15 @@ class network_2d:
 
         return grads
 
+    def modify_parms(self, **kwargs):
+        for k, v in kwargs.items():
+            if k in self.params:
+                self.params[k][:] = v
+            else:
+                print(
+                    f"key {k} not in params, skipit, keylist:{list(self.params.keys())}"
+                )
+
 
 if __name__ == "__main__":
     pass
