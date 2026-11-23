@@ -7,6 +7,8 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 # # 拼接 book_src 的绝对路径
 sys.path.append(os.path.join(BASE_DIR, ".."))
 import numpy as np
+import matplotlib.pyplot as plt
+
 from network_2d import network_2d
 from dataset_2d import get_dataset
 from basic_func import plot_loss_curve
@@ -83,15 +85,11 @@ print(f"err_idx {err_idx}")
 idx = 0
 eid = 0
 # %%
-import numpy as np
-import matplotlib.pyplot as plt
-
 W1 = np.array([[2.1, 0.4, -2.4], [-1.7, 2.6, -1.0]])
 b1 = np.array([-0.3, -0.3, -0.2])
 W2 = np.array([[-1.9, 1.9], [-1.9, 1.9], [-1.8, 1.8]])
 b2 = np.array([1.7, -1.7])
 W1 /= 3
-
 
 def forward(x):
     z1 = x @ W1 + b1
@@ -130,9 +128,8 @@ def plot_circle(r=2, c="green"):
     plt.plot(xs, ys, color=c, linewidth=2, label=f"circle r={r}")
 
 
-plot_line(2.1, -1.7, -0.3, "L1")
-plot_line(0.4, 2.6, -0.3, "L2")
-plot_line(-2.4, -1.0, -0.2, "L3")
+for i, name in enumerate(["L1", "L2", "L3"]):
+    plot_line(W1[0, i], W1[1, i], b1[i], name)
 plot_circle(1, "green")
 plot_circle(2, "blue")
 plt.xlim(-3, 3)
